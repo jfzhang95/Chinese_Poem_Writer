@@ -30,7 +30,7 @@ def to_word(predict, vocabs):
 
 
 def write_poem(begin_word=None):
-    model = torch.load('model/model_100_20.pth', map_location=lambda storage, loc: storage)
+    model = torch.load('model/model_100.pth', map_location=lambda storage, loc: storage)
     model.eval()
 
 
