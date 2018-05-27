@@ -1,17 +1,17 @@
+import torch
+from torch.autograd import Variable
 from utils import process_poems, generate_batch
 import argparse
 import torch.nn as nn
 import torch.optim as optim
-import sys
-from char_cnn.utils import *
-from char_cnn.model import TCN
+from network.model import TCN
 import time
 import math
 import numpy as np
 
 import warnings
-warnings.filterwarnings("ignore")   # Suppress the RunTimeWarning on unicode
 
+warnings.filterwarnings("ignore")  # Suppress the RunTimeWarning on unicode
 
 parser = argparse.ArgumentParser(description='Sequence Modeling - Character Level Language Model')
 parser.add_argument('--batch_size', type=int, default=64, metavar='N',
@@ -61,9 +61,12 @@ file_path = 'data/poems.txt'
 poems_vector, word_to_int, vocabularies = process_poems(file_path)
 batches_inputs, batches_outputs = generate_batch(args.batch_size, poems_vector, word_to_int, args.seq_len)
 
-batches_inputs = Variable(torch.from_numpy(np.array(batches_inputs)).long()).cuda()
-batches_outputs = Variable(torch.from_numpy(np.array(batches_outputs)).long()).cuda()
+batches_inputs = Variable(torch.from_numpy(np.array(batches_inputs)).long())
+batches_outputs = Variable(torch.from_numpy(np.array(batches_outputs)).long())
 
+if args.cuda:
+    batches_inputs = batches_inputs.cuda()
+    batches_outputs = batches_outputs.cuda()
 
 n_characters = len(vocabularies)
 num_chans = [args.nhid] * (args.levels - 1) + [args.emsize]
@@ -89,7 +92,6 @@ def train(epoch):
     n_chunk = len(poems_vector) // args.batch_size
     for batch_idx in range(n_chunk):
         inp, target = batches_inputs[n], batches_outputs[n]
-        # inp, target = get_batch(source, i, args)
         optimizer.zero_grad()
         output = model(inp)
         eff_history = args.seq_len - args.validseqlen
@@ -97,6 +99,7 @@ def train(epoch):
         final_target = target[:, eff_history:].contiguous().view(-1)
         # final_output = output.contiguous().view(-1, n_characters)
         # final_target = target.contiguous().view(-1)
+
         loss = criterion(final_output, final_target)
         loss.backward()
 
@@ -112,87 +115,21 @@ def train(epoch):
             print('| epoch {:3d} | {:5d}/{:5d} batches | lr {:02.5f} | ms/batch {:5.2f} | '
                   'loss {:5.3f} | bpc {:5.3f}'.format(
                 epoch, batch_idx, int(n_chunk), lr,
-                              elapsed * 1000 / args.log_interval, cur_loss, cur_loss / math.log(2)))
+                elapsed * 1000 / args.log_interval, cur_loss, cur_loss / math.log(2)))
             total_loss = 0
             start_time = time.time()
 
-
-        # if batch % (200 * args.log_interval) == 0 and batch > 0:
-        #     vloss = evaluate(val_data)
-        #     print('-' * 89)
-        #     print('| In epoch {:3d} | valid loss {:5.3f} | '
-        #           'valid bpc {:8.3f}'.format(epoch, vloss, vloss / math.log(2)))
-        #     model.train()
-
     if epoch != 0 and epoch % 25 == 0:
-        save_filename = 'model/model_{}_20.pth'.format(str(epoch))
+        save_filename = 'model/model_{}.pth'.format(str(epoch))
         torch.save(model, save_filename)
         print('Saved as %s' % save_filename)
 
     return sum(losses) * 1.0 / len(losses)
 
 
-def to_word(predict, vocabs):
-    t = np.cumsum(predict)
-    s = np.sum(predict)
-    sample = int(np.searchsorted(t, np.random.rand(1) * s))
-    if sample > len(vocabs):
-        sample = len(vocabs) - 1
-    return vocabs[sample]
-
-def pretty_print_poem(poem_):
-    poem_sentences = poem_.split('。')
-    for s in poem_sentences:
-        if s != '' and len(s) > 10:
-            print(s + '。')
-
 if __name__ == "__main__":
-
     for epoch in range(1, args.epochs + 1):
         train(epoch)
-
-
-    # begin_word = None
-    # start_token = 'B'
-    # end_token = 'E'
-    # corpus_file = './data/poems.txt'
-    #
-    # model = torch.load('model/model100.pth')
-    # model.eval()
-    #
-    # poems_vector, word_int_map, vocabularies = process_poems(corpus_file)
-    #
-    # batches_inputs = Variable(torch.from_numpy(np.array(batches_inputs)).long()).cuda()
-    #
-    # x = Variable(torch.from_numpy(np.array([list(map(word_int_map.get, start_token))])).long()).cuda()
-    #
-    # y = model(x)
-    #
-    # if begin_word:
-    #     word = begin_word
-    # else:
-    #     word = to_word(y.detach().cpu().numpy(), vocabularies)
-    #
-    # poem_ = ''
-    #
-    # i = 0
-    # while word != end_token:
-    #     poem_ += word
-    #     i += 1
-    #     if i >= 24:
-    #         break
-    #     x = np.zeros((1, 1))
-    #     x[0, 0] = word_int_map[word]
-    #
-    #     x = Variable(torch.from_numpy(np.array([list(map(word_int_map.get, start_token))])).long()).cuda()
-    #
-    #     y = model(x)
-    #     word = to_word(y.detach().cpu().numpy(), vocabularies)
-    #
-    #
-    # pretty_print_poem(poem_=poem_)
-#
-
 
 
 

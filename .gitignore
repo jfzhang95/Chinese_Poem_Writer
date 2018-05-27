@@ -6,8 +6,7 @@ __pycache__/
 # C extensions
 *.so
 
-char_cnn/
-data/
+
 .idea/
 
 # Distribution / packaging

@@ -8,7 +8,6 @@ end_token = 'E'
 
 
 def process_poems(file_name):
-    # 诗集
     poems = []
     with open(file_name, "r", encoding='utf-8', ) as f:
         for line in f.readlines():
@@ -49,17 +48,24 @@ def generate_batch(batch_size, poems_vec, word_to_int, max_length=81):
         end_index = start_index + batch_size
 
         batches = poems_vec[start_index:end_index]
-        # length = max(map(len, batches))
+
         x_data = np.full((batch_size, max_length), word_to_int[' '], np.int32)
         for row in range(batch_size):
             x_data[row, :len(batches[row])] = batches[row]
         y_data = np.copy(x_data)
         y_data[:, :-1] = x_data[:, 1:]
-        """
-        x_data             y_data
-        [6,2,4,6,9]       [2,4,6,9,9]
-        [1,4,2,8,5]       [4,2,8,5,5]
-        """
+
         x_batches.append(x_data)
         y_batches.append(y_data)
     return x_batches, y_batches
+
+
+def to_word(predict, vocabs):
+    t = np.cumsum(predict)
+    s = np.sum(predict)
+    sample = int(np.searchsorted(t, np.random.rand(1) * s))
+    if sample >= len(vocabs):
+        sample = len(vocabs) - 1
+    if sample < 0:
+        sample = 0
+    return vocabs[sample]
