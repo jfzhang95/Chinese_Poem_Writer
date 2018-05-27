@@ -8,15 +8,77 @@ import warnings
 warnings.filterwarnings("ignore")  # Suppress the RunTimeWarning on unicode
 
 parser = argparse.ArgumentParser(description='Sequence Modeling - Character Level Language Model')
-parser.add_argument("-m", "--mode", choices=["random", "head"], default="random",
-                    help="select mode by 'random' or head")
+parser.add_argument("-m", "--mode", choices=["context", "random", "head"], default="random",
+                    help="select mode by 'context', 'random' or head")
 
 start_token = 'B'
 end_token = 'E'
 corpus_file = './data/poems.txt'
 
 
+def write_poem_context(rows=4, cols=None, begin_word=None):
+    """This mode will consider poem whole context"""
+    model = torch.load('model/model_100.pth', map_location=lambda storage, loc: storage)
+    model.eval()
+
+    poems_vector, word_int_map, vocabularies = process_poems(corpus_file)
+
+    if begin_word is not None:
+        word = begin_word
+    else:
+        x = Variable(torch.from_numpy(np.array([list(map(word_int_map.get, start_token))])).long())
+        y = model(x)
+        word = to_word(y.detach().numpy(), vocabularies)
+
+    poem = ''
+    context = 'B'
+
+    before_word = None
+    flag = True
+
+    ignore_list = ['B', 'E', ' ', '。', '，', '\n']
+
+    i = 0
+
+    if cols is None:
+        if np.random.random() <= 0.5:
+            cols = 5
+        else:
+            cols = 7
+
+    while word:
+        if word in ignore_list:
+            x = Variable(torch.from_numpy(np.array([list(map(word_int_map.get, context))])).long())
+            y = model(x)
+            word = to_word(y.detach().numpy(), vocabularies)
+            continue
+
+        elif word == before_word and flag == True:
+            x = Variable(torch.from_numpy(np.array([list(map(word_int_map.get, context))])).long())
+            y = model(x)
+            word = to_word(y.detach().numpy(), vocabularies)
+            flag = False
+            continue
+
+        else:
+            poem += word
+            context += word
+            before_word = word
+            flag = True
+            i += 1
+
+            if i % cols == 0 and i < rows*cols:
+                poem += '\n'
+            if i >= rows*cols:
+                break
+
+            x = Variable(torch.from_numpy(np.array([list(map(word_int_map.get, context))])).long())
+            y = model(x)
+            word = to_word(y.detach().numpy(), vocabularies)
+    return poem
+
 def write_poem_random(rows=4, cols=None, begin_word=None):
+    """This mode just generates each word based on the last word"""
     model = torch.load('model/model_100.pth', map_location=lambda storage, loc: storage)
     model.eval()
 
@@ -137,15 +199,22 @@ def write_poem_head(begin_words=None):
 
 if __name__ == "__main__":
     args = parser.parse_args()
-    if args.mode == 'random':
-        rows = int(input("Please input poem's row: "))
+    if args.mode == 'context':
+        rows = int(input("Please input poem's rows: "))
         print('Generating...')
-        poem = write_poem_random(rows)
+        poem = write_poem_context(rows)
         print(poem)
     elif args.mode == 'head':
-        begin_words = input("Please input Chinese character: ")
+        begin_words = input("Please input Chinese characters: ")
         print('Generating...')
         poem = write_poem_head(begin_words)
         print(poem)
+    elif args.mode == 'random':
+        rows = int(input("Please input poem's rows: "))
+        print('Generating...')
+        poem = write_poem_random(rows)
+        print(poem)
+
+
 
 
