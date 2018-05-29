@@ -17,7 +17,7 @@ corpus_file = './data/poems.txt'
 
 
 def write_poem_context(rows=4, cols=None, begin_word=None):
-    """This mode will consider poem whole context"""
+    """This mode will generate poem by considering whole previous context"""
     model = torch.load('model/model_100.pth', map_location=lambda storage, loc: storage)
     model.eval()
 
@@ -77,8 +77,8 @@ def write_poem_context(rows=4, cols=None, begin_word=None):
             word = to_word(y.detach().numpy(), vocabularies)
     return poem
 
-def write_poem_random(rows=4, cols=None, begin_word=None):
-    """This mode just generates each word based on the last word"""
+def write_poem_fast(rows=4, cols=None, begin_word=None):
+    """This mode just generates each word without context information"""
     model = torch.load('model/model_100.pth', map_location=lambda storage, loc: storage)
     model.eval()
 
@@ -209,10 +209,10 @@ if __name__ == "__main__":
         print('Generating...')
         poem = write_poem_head(begin_words)
         print(poem)
-    elif args.mode == 'random':
+    elif args.mode == 'fast':
         rows = int(input("Please input poem's rows: "))
         print('Generating...')
-        poem = write_poem_random(rows)
+        poem = write_poem_fast(rows)
         print(poem)
 
 
