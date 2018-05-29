@@ -8,8 +8,8 @@ import warnings
 warnings.filterwarnings("ignore")  # Suppress the RunTimeWarning on unicode
 
 parser = argparse.ArgumentParser(description='Sequence Modeling - Character Level Language Model')
-parser.add_argument("-m", "--mode", choices=["context", "random", "head"], default="random",
-                    help="select mode by 'context', 'random' or head")
+parser.add_argument("-m", "--mode", choices=["context", "fast", "head"], default="fast",
+                    help="select mode by 'context', 'fast' or head")
 
 start_token = 'B'
 end_token = 'E'
