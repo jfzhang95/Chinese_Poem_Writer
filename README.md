@@ -6,12 +6,12 @@ Therefore, we train this Chinese poem writer using TCN.
 
 ### Dependencies
 ```
-Python3.x(Tested with 3.5)
-PyTorch(Tested with 0.4.0)
+Python3.x (Tested with 3.5)
+PyTorch (Tested with 0.4.0)
 ```
 
 ### Installation
-The code was tested with Python 3.5. To use this code, please do:
+To use this code, please do:
 
 
 0. Clone the repo:
@@ -24,7 +24,7 @@ The code was tested with Python 3.5. To use this code, please do:
     python main.py -m fast
     ```
 ### Training
-To train this Chinese poems writer, you should run:
+To train this Chinese poems writer, you can run:
 
     python train.py
 
@@ -33,8 +33,8 @@ For more details, please see in [train.py](https://github.com/jfzhang95/Chinese_
 ### Usage
 We built three poem generator modes:
 
-0. fast - it can generates each word just based on the last word.
-1. context - it can generate each word based on entire previous context.
+0. fast - it can generate each word only based on the last word.
+1. context - it can generate each word based on the entire previous context.
 2. head - it can generate Acrostic based on user inputs.
 
 To change generator mode, you should change "fast" to "context" or "head" behind:
