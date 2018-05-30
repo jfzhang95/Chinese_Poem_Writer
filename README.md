@@ -45,17 +45,17 @@ To change generator mode, you should change "fast" to "context" or "head" behind
 
     python main.py -m fast
 
-<img src="https://github.com/jfzhang95/Chinese_Poem_Writer/blob/master/doc/fast.png" width = "400" height = "150" alt="fast" />
+<img src="https://github.com/jfzhang95/Chinese_Poem_Writer/blob/master/doc/fast.png" width = "450" height = "120" alt="fast" />
 
     python main.py -m context
 
-<img src="https://github.com/jfzhang95/Chinese_Poem_Writer/blob/master/doc/context.png" width = "400" height = "150" alt="context" />
+<img src="https://github.com/jfzhang95/Chinese_Poem_Writer/blob/master/doc/context.png" width = "450" height = "120" alt="context" />
 
     python main.py -m head
 
-<img src="https://github.com/jfzhang95/Chinese_Poem_Writer/blob/master/doc/head.png" width = "400" height = "150" alt="head" />
+<img src="https://github.com/jfzhang95/Chinese_Poem_Writer/blob/master/doc/head.png" width = "450" height = "120" alt="head" />
 
-Upload generated poem into [diyiziti](http://www.diyiziti.com/), we can get more artistic result!
+Upload generated poem into [diyiziti](http://www.diyiziti.com/), we can get more artistic result !
 
 ![4](doc/demo.png)
 
@@ -63,7 +63,7 @@ Upload generated poem into [diyiziti](http://www.diyiziti.com/), we can get more
 
 - [x] Basic model and function
 - [ ] Write a script to upload generated poem automatically
-- [ ] Training our model with more and better data
+- [ ] Training our model with more and better [data](https://github.com/chinese-poetry/chinese-poetry)
 
 
 We thank the authors of [pytorch-tcn](https://github.com/locuslab/TCN) for making their PyTorch implementation of TCN available!
