@@ -1,8 +1,8 @@
 # Chinese poem writer
 
 ### Introduction
-We built a Chinese poems writer based on [Temporal Convolutional Networks (TCN)](https://arxiv.org/abs/1803.01271). This paper recently indicates that a simple TCN architecture outperforms RNNs across a diverse range of tasks and datasets, while demonstrating longer effective memory.
-Therefore, we train this Chinese poems writer using TCN.
+We built a Chinese poem writer based on [Temporal Convolutional Networks (TCN)](https://arxiv.org/abs/1803.01271). This paper recently indicates that a simple TCN architecture outperforms RNNs across a diverse range of tasks and datasets, while demonstrating longer effective memory.
+Therefore, we train this Chinese poem writer using TCN.
 
 ### Dependencies
 ```
@@ -31,11 +31,11 @@ To train this Chinese poems writer, you should run:
 For more details, please see in [train.py](https://github.com/jfzhang95/Chinese_Poem_Writer/blob/master/train.py).
 
 ### Usage
-We built three poem generator mode:
+We built three poem generator modes:
 
 0. fast - it can generates each word just based on the last word.
 1. context - it can generate each word based on entire previous context.
-2. head - it can generate Acrostic using user inputs.
+2. head - it can generate Acrostic based on user inputs.
 
 To change generator mode, you should change "fast" to "context" or "head" behind:
 
@@ -55,7 +55,7 @@ To change generator mode, you should change "fast" to "context" or "head" behind
 
 <img src="https://github.com/jfzhang95/Chinese_Poem_Writer/blob/master/doc/head.png" width = "450" height = "120" alt="head" />
 
-Upload generated poem into [diyiziti](http://www.diyiziti.com/), we can get more artistic result !
+Upload generated poem into [diyiziti](http://www.diyiziti.com/), we can get more artistic result!
 
 ![4](doc/demo.png)
 
