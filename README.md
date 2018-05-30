@@ -45,19 +45,19 @@ To change generator mode, you should change "fast" to "context" or "head" behind
 
     python main.py -m fast
 
-![1](doc/fast.png)
+<img src="https://github.com/jfzhang95/Chinese_Poem_Writer/blob/master/doc/fast.png" width = "400" height = "150" alt="fast" />
 
     python main.py -m context
 
-![2](doc/context.png)
+<img src="https://github.com/jfzhang95/Chinese_Poem_Writer/blob/master/doc/context.png" width = "400" height = "150" alt="context" />
 
     python main.py -m head
 
-![3](doc/head.png)
+<img src="https://github.com/jfzhang95/Chinese_Poem_Writer/blob/master/doc/head.png" width = "400" height = "150" alt="head" />
 
 Upload generated poem into [diyiziti](http://www.diyiziti.com/), we can get more artistic result!
 
-![4](doc/demo/png)
+![4](doc/demo.png)
 
 ### TODO
 
