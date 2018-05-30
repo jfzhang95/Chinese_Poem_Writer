@@ -16,7 +16,7 @@ end_token = 'E'
 corpus_file = './data/poems.txt'
 
 
-def write_poem_context(rows=4, cols=None, begin_word=None):
+def write_poem_context(rows=4, cols=None, begin_word=None, context_info=None):
     """This mode will generate poem by considering whole previous context"""
     model = torch.load('model/model_100.pth', map_location=lambda storage, loc: storage)
     model.eval()
@@ -31,7 +31,10 @@ def write_poem_context(rows=4, cols=None, begin_word=None):
         word = to_word(y.detach().numpy(), vocabularies)
 
     poem = ''
-    context = 'B'
+    if context_info is not None:
+        context = context_info
+    else:
+        context = 'B'
 
     before_word = None
     flag = True
@@ -145,6 +148,7 @@ def write_poem_head(begin_words=None):
 
     poems_vector, word_int_map, vocabularies = process_poems(corpus_file)
     poem = ''
+    context = ''
 
     ignore_list = ['B', 'E', ' ', '。', '，', '\n']
 
@@ -155,6 +159,7 @@ def write_poem_head(begin_words=None):
 
     for begin_word in begin_words:
         poem += begin_word
+        context += begin_word
         before_word = begin_word
         flag = True
         i = 1
@@ -179,6 +184,7 @@ def write_poem_head(begin_words=None):
 
             else:
                 poem += word
+                context += word
                 before_word = word
                 flag = True
                 i += 1
@@ -191,7 +197,7 @@ def write_poem_head(begin_words=None):
     if rows < 4:
         poem += '\n'
         remaining = 4 - rows
-        poem_ = write_poem_random(remaining, cols, word)
+        poem_ = write_poem_context(remaining, cols, word, context)
         poem += poem_
 
     return poem

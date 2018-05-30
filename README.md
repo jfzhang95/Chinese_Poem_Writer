@@ -1,38 +1,61 @@
-# Chinese_poem_writer
-[![Build Status](https://travis-ci.org/hjptriplebee/Chinese_poem_generator.svg?branch=master)](https://travis-ci.org/hjptriplebee/Chinese_poem_generator)
-[![codecov](https://codecov.io/gh/hjptriplebee/Chinese_poem_generator/branch/master/graph/badge.svg)](https://codecov.io/gh/hjptriplebee/Chinese_poem_generator)
-[![license](https://img.shields.io/aur/license/yaourt.svg)](https://github.com/hjptriplebee/Chinese_poem_generator/blob/master/LICENSE)
-唐诗生成器，MC胖虎，使用LSTM完成，先看几个demo：
+# Chinese poem writer
 
-一首藏头诗刀山火海送给大家！
+### Introduction
+We built a Chinese poems writer based on [Temporal Convolutional Networks (TCN)](https://arxiv.org/abs/1803.01271). This paper recently indicates that a simple TCN architecture outperforms RNNs across a diverse range of tasks and datasets, while demonstrating longer effective memory.
 
-<img src="https://raw.githubusercontent.com/hjptriplebee/Chinese_poem_generator/master/panghu1.jpg" width = "100" height = "100" alt="demo2" /> <img src="https://raw.githubusercontent.com/hjptriplebee/Chinese_poem_generator/master/demo1.png" width = "350" height = "100" alt="demo1" />
+### Dependencies
+```
+Python3.x(Tested with 3.5)
+PyTorch(Tested with 0.4.0)
+```
 
-胖虎学诗3万首，会对偶，用典故，经常能作出边塞、田园、离别等多种风格的诗，信手拈来，好不好！
+### Installation
+The code was tested with Python 3.5. To use this code, please do:
 
-<img src="https://raw.githubusercontent.com/hjptriplebee/Chinese_poem_generator/master/demo2.png" width = "850" height = "350" alt="demo2" />
 
-## 依赖
-- Python3
-- tensorflow1.0+
+0. Clone the repo:
+    ```Shell
+    git https://github.com/jfzhang95/Chinese_Poem_Writer
+    cd Chinese_Poem_Writer
+    ```
+1. To try the demo code, please run:
+    ```Shell
+    python main.py -m fast
+    ```
+### Training
+To train this Chinese poems writer, you should run:
 
-## 用法
-- "python3 main.py -m {train, test, head}" train训练, test随机写诗, head藏头诗. 
+    python train.py
 
-## 最近一次更新(2018-05-17)
-- 加入Travis CI持续集成
+For more details, please see in [train.py](https://github.com/jfzhang95/Chinese_Poem_Writer/blob/master/train.py).
 
-## 接下来要做
-- 数据预处理步骤需要加强，比如：繁体字、特殊符号。
-- 使用更全更优质的唐诗数据训练。[https://github.com/chinese-poetry/chinese-poetry](https://github.com/chinese-poetry/chinese-poetry)
-- 修复有时出现的死循环。
-- 看图写诗，苦于没有数据集。
+### Usage
+We built three poem generator mode:
 
-有时候效果不好，多生成几次一定有比较好的结果。现在看起来有点像人工智障，但是相信胖虎会越来越厉害！
+0. fast - it can generates each word just based on the last word.
+1. context - it can generate each word based on entire previous context.
+2. head - it can generate Acrostic using user inputs.
 
-**方法比较粗暴，欢迎各位大佬提出建设性意见！**
-**详细的项目实现和代码说明请看[这里](http://blog.csdn.net/accepthjp/article/details/73875108)**
+To change generator mode, you should change "fast" to "context" or "head" behind:
 
-<img src="https://raw.githubusercontent.com/hjptriplebee/Chinese_poem_generator/master/panghu2.jpg" width = "200" height = "200" alt="demo2" />
+    python main.py -m fast
 
+### Results
+run
+
+    python main.py -m fast
+
+![1](doc/fast.png)
+
+run
+
+    python main.py -m context
+
+![2](doc/context.png)
+
+run
+
+    python main.py -m head
+
+![1](doc/head.png)
 
