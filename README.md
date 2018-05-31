@@ -2,7 +2,7 @@
 
 ### Introduction
 We built a Chinese poem writer based on [Temporal Convolutional Networks (TCN)](https://arxiv.org/abs/1803.01271). This paper recently indicates that a simple TCN architecture outperforms RNNs across a diverse range of tasks and datasets, while demonstrating longer effective memory.
-Therefore, we train this Chinese poem writer using TCN.
+Therefore, we built this Chinese poem writer using TCN.
 
 ### Dependencies
 ```
